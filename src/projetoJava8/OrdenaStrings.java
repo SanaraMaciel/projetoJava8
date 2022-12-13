@@ -66,7 +66,12 @@ public class OrdenaStrings {
 		
 		//consumidor com lambda
 		Consumer<String> impressor = s-> System.out.println(s);
-		palavras.forEach(impressor);
+		
+		//outra forma de escrever com method reference
+		Consumer<String> impressorL = System.out::println;
+		
+		palavras.forEach(impressor); //print normal
+		palavras.forEach(impressorL); //print reference
 
 	}
 
