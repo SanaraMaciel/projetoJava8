@@ -4,9 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.MonthDay;
 import java.time.Period;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 
 public class Datas {
 
@@ -67,10 +71,84 @@ public class Datas {
 		LocalDate agoraPeriodo = LocalDate.now();
 		LocalDate dataFutura = LocalDate.of(2099, Month.JANUARY, 25);
 		Period periodoEntre = Period.between(agoraPeriodo, dataFutura);
-		System.out.println(
-				"periodo intervalo Anos: " + periodoEntre.getYears() +
-				" Meses: " + periodoEntre.getMonths() + " Dias: " + periodoEntre.getDays());
+		System.out.println("periodo intervalo Anos: " + periodoEntre.getYears() + " Meses: " + periodoEntre.getMonths()
+				+ " Dias: " + periodoEntre.getDays());
+
+		LocalTime currentTime = LocalTime.now(); // saída 09:05:03.244
+		System.out.println(currentTime);
+		LocalDate today = LocalDate.now(); // saída 2014-12-10
+		System.out.println(today);
+		LocalDateTime now = LocalDateTime.now(); // saída 2014-12-10-09-05-03.244
+		System.out.println(now);
+
+//		usando o Zone para declarar datas
+
+		LocalTime time = LocalTime.now(ZoneId.of("America/Chicago"));
+		LocalDate date = LocalDate.now(ZoneId.of("America/Sao_Paulo"));
+		LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("America/Los_Angeles"));
+
+//		representando qualquer natal
+		MonthDay someChristmas = MonthDay.of(Month.DECEMBER, 25);
+		System.out.println("Natal: " + someChristmas);
+
+//		cria um momento exato no tempo com o método of:
+		LocalDateTime someDate = LocalDateTime.of(2017, Month.JANUARY, 25, 13, 45);
+		System.out.println("Exato: " + someDate);
+
+		/**
+		 * get: obtém o valor de algo is: verifica se algo é verdadeiro 
+		 * with: lembra um ::setter::, mas retorna um novo objeto com o valor alterado
+		 * plus: soma alguma  unidade ao objeto, retorna um novo objeto com o valor alterado 
+		 * minus: subtrai alguma unidade do objeto, retorna um novo objeto com o valor alterado 
+		 * to: converte um objeto de um tipo para outro
+		 * at: combina um objeto com outro
+		 */
+
+//		Interfaces TemporalField e ChronoField
+		LocalDateTime now2 = LocalDateTime.of(2014, 12, 15, 13, 0); // 15
+		System.out.println(now2.get(ChronoField.DAY_OF_MONTH)); // 349 
+		System.out.println(now2.get(ChronoField.DAY_OF_YEAR)); // 13    
+		System.out.println(now2.get(ChronoField.HOUR_OF_DAY)); // 0  
+		System.out.println(now2.get(ChronoField.MINUTE_OF_HOUR));// 2014
+		System.out.println(now2.get(ChronoField.YEAR)); // 1 (MONDAY)        
+		System.out.println(now2.get(ChronoField.DAY_OF_WEEK)); // 12
+		System.out.println(now2.get(ChronoField.MONTH_OF_YEAR)); 
+
+//		comparando datas com isAfter isBefore
+		MonthDay day1 = MonthDay.of(1, 1); // 01/jan
+		MonthDay day2 = MonthDay.of(1, 2); // 02/jan
+
+		System.out.println(day1.isAfter(day2)); // false
+		System.out.println(day1.isBefore(day2)); // true
+
+//		métodos para indicar se alguma porção da data é suportada pelo objeto ChronoField e ChronoUnit :
+
+		LocalDate aprilFools = LocalDate.of(2015, 4, 1);
+		LocalDate foolsDay = LocalDate.of(2015, 4, 1);
 		
+// são equals? // true
+		System.out.println(aprilFools.isEqual(foolsDay)); 
+		
+// este objeto suporta dias? // true
+		System.out.println(aprilFools.isSupported(ChronoField.DAY_OF_MONTH)); 
+		
+// este objeto suporta horas? // false
+		System.out.println(aprilFools.isSupported(ChronoField.HOUR_OF_DAY)); 
+		
+// posso fazer operações com dias? //true
+		System.out.println(aprilFools.isSupported(ChronoUnit.DAYS));
+		
+// posso fazer operações com horas? //false
+		System.out.println(aprilFools.isSupported(ChronoUnit.HOURS));
+
+	
+
+//		LocalDate d = LocalDate.of(2013, 9, 7);
+//		// UnsupportedTemporalTypeException
+//		// LocalDate não suporta horas!
+//		d = d.plus(3, ChronoUnit.HOURS);
+//		System.out.println(d);
+
 		
 //		Duration caso queira trabalhar com intervalo de horas.
 
